@@ -28,14 +28,14 @@
 #define SOUND_VELOCITY 0.034
 #define CM_TO_INCH 0.393701
 
-BlynkTimer timer;
+//BlynkTimer timer;
 
 //WiFiClient client;
 
 const int trigPin = 4;
 const int echoPin = 2;
 
-const int motor = 34;
+const int motor = 5;
 
 long duration;
 float distanceCm;
@@ -59,6 +59,7 @@ BLYNK_WRITE(V1)
   Serial.print(val);
   Serial.println("");
   servo1.write(val);
+  sonicRead();
 }
 
 BLYNK_WRITE(V2)
@@ -68,6 +69,7 @@ BLYNK_WRITE(V2)
   Serial.print(val);
   Serial.println("");
   servo2.write(val);
+  sonicRead();
 }
 
 BLYNK_WRITE(V3)
@@ -77,6 +79,7 @@ BLYNK_WRITE(V3)
   Serial.print(val);
   Serial.println("");
   servo3.write(val);
+  sonicRead();
 }
 
 BLYNK_WRITE(V4)
@@ -86,11 +89,14 @@ BLYNK_WRITE(V4)
   Serial.print(val);
   Serial.println("");
   servoT.write(val);
+  sonicRead();
 }
 
 BLYNK_WRITE(V6)
 {
   int val = param.asInt();
+  Serial.print("Dispense: ");
+  Serial.println(val);
   if(val == 1){
     setMotor(true);
     delay(3000);
@@ -115,17 +121,17 @@ void setup()
   delay(100);
   temp1.attach(23);
   temp2.attach(19);
-  servo1.attach(5); 
-  servo2.attach(17);
-  servo3.attach(16);
-  servoT.attach(15);
+  servo1.attach(15); 
+  servo2.attach(16);
+  servo3.attach(17);
+  servoT.attach(18);
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
   pinMode(motor, OUTPUT);
   mlx.begin(); 
   //ThingSpeak.begin(client);  // Initialize ThingSpeak
   BlynkEdgent.begin();
-  timer.setInterval(500L,sonicRead);
+  //timer.setInterval(500L,sonicRead);
 }
 
 void loop() {
